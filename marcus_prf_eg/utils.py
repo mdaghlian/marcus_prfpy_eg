@@ -4,6 +4,10 @@ import matplotlib.image as mpimg
 from scipy import io, interpolate
 opj = os.path.join
 
+
+
+
+
 def get_prfdesign(screenshot_path, n_pix=100, dm_edges_clipping=[0,0,0,0]):
     """
     get_prfdesign
@@ -167,7 +171,8 @@ def percent_change(ts, baseline=20):
     t_dim = 1  # axis for time
     
     # first step of PSC; set NaNs to zero if dividing by 0 (in case of crappy timecourses)
-    ts_m = ts*np.expand_dims(np.nan_to_num((100/np.mean(ts, axis=vx_dim))), vx_dim)
+    psc_factor = np.nan_to_num( 100 / np.mean(ts, axis=t_dim)) 
+    ts_m = ts*psc_factor[...,np.newaxis]
 
     if isinstance(baseline, int):
         # Is the baseline an int? 
