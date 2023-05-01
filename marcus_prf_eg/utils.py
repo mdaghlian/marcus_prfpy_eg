@@ -191,3 +191,13 @@ def percent_change(ts, baseline=20):
     psc = ts_m-median_baseline[..., np.newaxis]
     
     return psc
+
+def get_rsq(tc_target, tc_fit):
+    ss_res = np.sum((tc_target-tc_fit)**2, axis=-1)
+    ss_tot = np.sum(
+        (tc_target-tc_target.mean(axis=-1)[...,np.newaxis])**2, 
+        axis=-1
+        )
+    rsq = 1-(ss_res/ss_tot)
+
+    return rsq
