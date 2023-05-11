@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
 setup(
-    name="marcus_prfpy_eg",
+    name="marcus_prf_eg",
     packages=find_packages(),
 )
