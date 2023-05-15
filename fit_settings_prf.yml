@@ -4,7 +4,7 @@
 # -> hrf information
 hrf:
   pars: [1,1,0]         # Default parameters 
-  deriv_bound: [0,10]   # If fitting the HRF these are the bounds 
+  deriv_bound: [0,10]   # If fitting the HRF these are the bounds (for hrf[1])
   disp_bound: [0,0]     # Generally advised to fix the dispersion value. Messing with this can get complex as you risk confounding inhibitory components 
 
 # -> Generic fitting information
@@ -16,11 +16,9 @@ rsq_threshold: 0.1  #
 TR: 1.5
 #
 filter_predictions : False # Other options to do filtering...
-n_jobs : 1 # For paralellisation, how many jobs to split off into
+n_jobs : 4 # For paralellisation, how many jobs to split off into
 n_batches : 10 # For paralellisation at grid stage...
 # ***** APPLIES TO PRF MODELS *****
-# space our pRF lives in
-vf_extent: [-5, 5]
 
 # screen settings
 screen_size_cm: 39.3
@@ -40,3 +38,6 @@ bold_bsl: [0,0]
 prf_ampl: [0,1000]
 #Constraints
 constraints : False # Determines which fitter is used. None is fastere (lGBFS), than [] (trust-constrained)
+
+
+save_grids : True # Save the outputs of the grid stage?
