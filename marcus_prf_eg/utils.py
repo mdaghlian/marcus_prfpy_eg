@@ -11,67 +11,6 @@ def filter_for_nans(array):
         return np.nan_to_num(array)
     else:
         return array
-    
-def print_p():
-    '''
-    Easy look up table for prfpy model parameters
-    name to index...
-    '''
-    p_order = {}
-    # [1] gauss. Note hrf_1, and hrf_2 are idx 5 and 6, if fit...
-    p_order['gauss'] = {
-        'x'             :  0, # mu_x
-        'y'             :  1, # mu_y
-        'size_1'        :  2, # size
-        'amp_1'         :  3, # beta
-        'bold_baseline' :  4, # baseline 
-        'hrf_deriv'     :  5, # *hrf_1
-        'hrf_disp'      :  6, # *hrf_2
-        'rsq'           : -1, # ... 
-    }    
-    # [2] css. Note hrf_1, and hrf_2 are idx 6 and 7, if fit...
-    p_order['css'] = {
-        'x'             :  0, # mu_x
-        'y'             :  1, # mu_y
-        'size_1'        :  2, # size
-        'amp_1'         :  3, # beta
-        'bold_baseline' :  4, # baseline 
-        'n_exp'         :  5, # n
-        'hrf_deriv'     :  6, # *hrf_1
-        'hrf_disp'      :  7, # *hrf_2        
-        'rsq'           : -1, # ... 
-    }
-
-    # [3] dog. Note hrf_1, and hrf_2 are idx 7 and 8, if fit...
-    p_order['dog'] = {
-        'x'             :  0, # mu_x
-        'y'             :  1, # mu_y
-        'size_1'        :  2, # prf_size
-        'amp_1'         :  3, # prf_amplitude
-        'bold_baseline' :  4, # bold_baseline 
-        'amp_2'         :  5, # srf_amplitude
-        'size_2'        :  6, # srf_size
-        'hrf_deriv'     :  7, # *hrf_1
-        'hrf_disp'      :  8, # *hrf_2        
-        'rsq'           : -1, # ... 
-    }
-
-    p_order['norm'] = {
-        'x'             :  0, # mu_x
-        'y'             :  1, # mu_y
-        'size_1'        :  2, # prf_size
-        'amp_1'         :  3, # prf_amplitude
-        'bold_baseline' :  4, # bold_baseline 
-        'amp_2'         :  5, # srf_amplitude
-        'size_2'        :  6, # srf_size
-        'b_val'         :  7, # neural_baseline 
-        'd_val'         :  8, # surround_baseline
-        'hrf_deriv'     :  9, # *hrf_1
-        'hrf_disp'      : 10, # *hrf_2        
-        'rsq'           : -1, # rsq
-    }            
-
-    return p_order
 
 
 def get_prfdesign(screenshot_path, n_pix=100, dm_edges_clipping=[0,0,0,0]):
