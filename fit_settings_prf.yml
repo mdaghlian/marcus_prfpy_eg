@@ -36,6 +36,17 @@ fixed_grid_baseline : 0
 # set prf amplitude
 bold_bsl: [0,0]
 prf_ampl: [0,1000]
+
+norm:
+  surround_amplitude_grid: [0.05,0.2,0.4,0.7,1,3]
+  surround_size_grid: [5,8,12,18]
+  neural_baseline_grid: [0,1,10,100]
+  surround_baseline_grid: [0.1,1.0,10.0,100.0] # [1]
+  surround_amplitude_bound: [0,1000]
+  neural_baseline_bound: [0,1000]
+  surround_baseline_bound: [0.000001,1000] # [1]
+
+
 #Constraints
 constraints : False # Determines which fitter is used. None is fastere (lGBFS), than [] (trust-constrained)
 

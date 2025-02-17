@@ -8,15 +8,13 @@ hrf:
   disp_bound: [0,0]     # Generally advised to fix the dispersion value. Messing with this can get complex as you risk confounding inhibitory components 
 
 # -> Generic fitting information
-xtol: 1e-4 #fitting tolerance
-ftol: 1e-4
-grid_nr: 20         #number of items in grid
+grid_nr: 10         #number of items in grid
 rsq_threshold: 0.1  # 
 #
 TR: 1.5
 #
 filter_predictions : False # Other options to do filtering...
-n_jobs : 4 # For paralellisation, how many jobs to split off into
+n_jobs : 10 # For paralellisation, how many jobs to split off into
 n_batches : 10 # For paralellisation at grid stage...
 # ***** APPLIES TO PRF MODELS *****
 
@@ -41,3 +39,12 @@ constraints : False # Determines which fitter is used. None is fastere (lGBFS), 
 
 
 save_grids : True # Save the outputs of the grid stage?
+
+norm:
+  surround_amplitude_grid: [0.05,0.2,0.4,0.7,1,3]
+  surround_size_grid: [5,8,12,18]
+  neural_baseline_grid: [0,1,10,100]
+  surround_baseline_grid: [0.1,1.0,10.0,100.0] # [1]
+  surround_amplitude_bound: [0,1000]
+  neural_baseline_bound: [0,1000]
+  surround_baseline_bound: [0.000001,1000] # [1]

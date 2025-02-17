@@ -4,6 +4,118 @@ import matplotlib.image as mpimg
 from scipy import io, interpolate
 opj = os.path.join
 
+def prfpy_params_dict():
+    '''
+    Easy look up table for prfpy model parameters
+    name to index...
+    '''
+    p_order = {}
+    # [1] gauss. Note hrf_1, and hrf_2 are idx 5 and 6, if fit...
+    p_order['gauss'] = {
+        'x'             :  0, # mu_x
+        'y'             :  1, # mu_y
+        'size_1'        :  2, # size
+        'amp_1'         :  3, # beta
+        'bold_baseline' :  4, # baseline 
+        'hrf_deriv'     :  5, # *hrf_1
+        'hrf_disp'      :  6, # *hrf_2
+        'rsq'           : -1, # ... 
+    }    
+    # [2] css. Note hrf_1, and hrf_2 are idx 6 and 7, if fit...
+    p_order['css'] = {
+        'x'             :  0, # mu_x
+        'y'             :  1, # mu_y
+        'size_1'        :  2, # size
+        'amp_1'         :  3, # beta
+        'bold_baseline' :  4, # baseline 
+        'n_exp'         :  5, # n
+        'hrf_deriv'     :  6, # *hrf_1
+        'hrf_disp'      :  7, # *hrf_2        
+        'rsq'           : -1, # ... 
+    }
+
+    # [3] dog. Note hrf_1, and hrf_2 are idx 7 and 8, if fit...
+    p_order['dog'] = {
+        'x'             :  0, # mu_x
+        'y'             :  1, # mu_y
+        'size_1'        :  2, # prf_size
+        'amp_1'         :  3, # prf_amplitude
+        'bold_baseline' :  4, # bold_baseline 
+        'amp_2'         :  5, # srf_amplitude
+        'size_2'        :  6, # srf_size
+        'hrf_deriv'     :  7, # *hrf_1
+        'hrf_disp'      :  8, # *hrf_2        
+        'rsq'           : -1, # ... 
+    }
+
+    p_order['norm'] = {
+        'x'             :  0, # mu_x
+        'y'             :  1, # mu_y
+        'size_1'        :  2, # prf_size
+        'amp_1'         :  3, # prf_amplitude
+        'bold_baseline' :  4, # bold_baseline 
+        'amp_2'         :  5, # srf_amplitude
+        'size_2'        :  6, # srf_size
+        'b_val'         :  7, # neural_baseline 
+        'd_val'         :  8, # surround_baseline
+        'hrf_deriv'     :  9, # *hrf_1
+        'hrf_disp'      : 10, # *hrf_2        
+        'rsq'           : -1, # rsq
+    }            
+
+    p_order['csf']  ={
+        'width_r'       : 0,
+        'SFp'           : 1,
+        'CSp'          : 2,
+        'width_l'       : 3,
+        'crf_exp'       : 4,
+        'amp_1'         : 5,
+        'bold_baseline' : 6,
+        'hrf_1'         : 7,
+        'hrf_2'         : 8,
+        'rsq'           : -1,
+    }
+
+    return p_order
+
+def make_vx_wise_bounds(n_vx, bounds_in, **kwargs):
+    '''make_vx_wise_bounds        
+    In prfpy you normally you set the bounds for all voxels to be the same
+    Sometimes we want to do voxel wise bounds (e.g., to fix one parameter but 
+    fit the others)
+    
+    Input:
+    ----------
+    n_vx        Number of voxels/vertices being fit
+    bounds_in   list of tuples, for each parameter a min and a max 
+    Optional:
+    model           Which model are we setting bounds for
+    fix_param_dict  Dictionary of parameter, and the values you are fixing 
+                    e.g., vx_bound_dict = {'hrf_deriv' : np.ndarray} where 
+                    np.ndarray is the length of the number of voxels
+    
+    Output:
+    ----------
+    vx_wise_bounds  np.ndarray, n_vx x n_pars x 2
+    '''
+    model=kwargs.get('model', None)
+    fix_param_dict = kwargs.get('fix_param_dict', None)
+    
+    if isinstance(bounds_in, list):
+        bounds_in = np.array(bounds_in)
+    vx_wise_bounds = np.repeat(bounds_in[np.newaxis, ...], n_vx, axis=0)
+
+    if not fix_param_dict is None:
+        # Fix the specific parameters
+        model_idx = prfpy_params_dict()[model]
+        for p in fix_param_dict.keys():
+            # Upper and lower bound the same...
+            vx_wise_bounds[:,model_idx[p],0] = fix_param_dict[p]
+            vx_wise_bounds[:,model_idx[p],1] = fix_param_dict[p]
+
+    return vx_wise_bounds
+
+
 def filter_for_nans(array):
     """filter out NaNs from an array"""
 
